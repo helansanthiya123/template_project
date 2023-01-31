@@ -434,7 +434,18 @@
 					url:'add_to_cart/'+product_id,
 					dataType:'json',
 					success:function(result_job){
-            			window.location.href = '{{url("sign-in")}}';
+						if(result_job.data=='fail')
+						{
+							var action='test';
+							window.location.href = "{{url('sign-in')}}" + "/action=" + action;
+						}
+						else{
+							
+							// var user_id=result_job.user_id;
+							alert('test')
+							
+						}
+            			
 						
 					}
 				});

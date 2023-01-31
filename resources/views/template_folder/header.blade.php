@@ -10,26 +10,26 @@
 	<title>Fruitkha</title>
 
 	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+	<link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
 	<!-- google font -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
 	<!-- fontawesome -->
-	<link rel="stylesheet" href="assets/css/all.min.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
 	<!-- bootstrap -->
-	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
 	<!-- owl carousel -->
-	<link rel="stylesheet" href="assets/css/owl.carousel.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.css') }}">
 	<!-- magnific popup -->
-	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css') }}">
 	<!-- animate css -->
-	<link rel="stylesheet" href="assets/css/animate.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
 	<!-- mean menu css -->
-	<link rel="stylesheet" href="assets/css/meanmenu.min.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/meanmenu.min.css') }}">
 	<!-- main style -->
-	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 	<!-- responsive -->
-	<link rel="stylesheet" href="assets/css/responsive.css">
+	<link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
 </head>
 <body>
@@ -51,7 +51,7 @@
 						<!-- logo -->
 						<div class="site-logo">
 							<a href="index.html">
-								<img src="assets/img/logo.png" alt="">
+								<img src="{{ asset('assets/img/logo.png') }}" alt="">
 							</a>
 						</div>
 						<!-- logo -->
@@ -94,6 +94,7 @@
 									<ul class="sub-menu">
 										<li><a href="{{ url('sign-in') }}">SignIn</a></li>
 										<li><a href="{{ url('sign-up') }}">SignUp</a></li>
+										<li><a href="{{ route('front_signout') }}">Signout</a></li>
 									</ul>
 								</li>
 								<li>

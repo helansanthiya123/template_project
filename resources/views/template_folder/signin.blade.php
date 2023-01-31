@@ -53,7 +53,12 @@
 						    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 						      <div class="card-body">
 						        <div class="billing-address-form">
-						        	<form action="{{ route('postlogin') }}" method="POST">
+										@if(isset($action))
+										<form action="{{ route('add_cart_login') }}" name="add_cart" method="POST">
+										@else
+										<form action="{{ route('postlogin') }}" method="POST">
+										@endif
+						        	
 										@csrf
 						        		
 						        		<p>

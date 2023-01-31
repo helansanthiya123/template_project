@@ -36,6 +36,27 @@ class MyProduct extends Controller
         }
 
     }
+    public function add_cart_login(Request $request)
+    {
+        $request->validate([
+            'email'=>'required',
+            'password'=>'required'
+        ]);
+
+        $credential=$request->only('email','password');
+        
+        if(Auth::attempt($credential))
+        {
+           
+            return redirect()->intended('/')->with('message','Signed In');
+            
+        }
+        else{
+            return redirect('sign-in')->with('message','Login details are invalid');
+           
+        }
+
+    }
 
     public function register(Request $request)
     {
@@ -83,6 +104,13 @@ class MyProduct extends Controller
         Auth::logout();
 
         return redirect('sign-in');
+    }
+    public function front_signout()
+    {
+        Session::flush();
+        Auth::logout();
+
+        return redirect('/');
     }
     public function adminprofile()
     {

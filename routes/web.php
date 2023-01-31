@@ -42,16 +42,21 @@ Route::view('cart','template_folder/cart');
 Route::view('single-news','template_folder/single-news');
 Route::view('contact','template_folder/contact');
 Route::view('sign-up', 'template_folder/signup');
-Route::view('sign-in', 'template_folder/signin');
+Route::view('sign-in/{action?}', 'template_folder/signin');
+// Route::get('sign-in/{action}',function(){
+// 	return view('template_folder.signin');
+// });
 Route::post('postlogin',[MyProduct::class,'login'])->name('postlogin');
 Route::post('postsignup',[MyProduct::class,'register'])->name('postsignup');
 Route::post('addfruit',[MyProduct::class,'addfruit']);
 Route::post('updatefruit',[FruitController::class,'updatefruit']);
 Route::get('deletefruit/{id}',[FruitController::class,'deletefruit']);
 Route::get('add_to_cart/{id}',[FruitController::class,'add_to_cart']);
+Route::post('add_cart_login',[MyProduct::class,'add_cart_login'])->name('add_cart_login');
 
 
 Route::get('signout',[MyProduct::class,'signout'])->name('signout');
+Route::get('front_signout',[MyProduct::class,'front_signout'])->name('front_signout');
 
 Auth::routes();
 

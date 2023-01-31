@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\AddFruit; 
+use App\Models\AddFruit;
+use App\Models\Cart; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use DataTables;
@@ -66,11 +67,16 @@ class FruitController extends Controller
     public function add_to_cart($id)
     {
         $user_id = Auth::id();
-       
+        
         if($user_id)
         {
+            // return response()->json(['data'=>'success' ,'user_id'=>$user_id]);
+
+            $cart= new Cart;
+            $cart->product_id=$id;
+            $cart->user_id=$user_id;
+            $cart->save();
             return response()->json(['data'=>'success']);
-            
         }
         else{
            
