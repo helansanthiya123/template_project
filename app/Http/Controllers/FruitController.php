@@ -7,7 +7,9 @@ use App\Models\AddFruit;
 use App\Models\Cart; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use DataTables;
+use PHPUnit\Framework\Constraint\Count;
 
 class FruitController extends Controller
 {
@@ -84,4 +86,28 @@ class FruitController extends Controller
         }
         
     }
+    static public function cartItem()
+    {
+        $userId=Auth::id();
+        return Cart::where('user_id',$userId)->count();
+    }
+    public function cartListing()
+    {
+        $userId=Auth::id();
+        $products=DB::table('carts')
+        ->join('add_fruits','carts.product_id','=','add_fruits.id')
+        ->where('carts.user_id',$userId)
+        ->select('add_fruits.*','carts.id as cart_id',DB::raw("count(carts.product_id) as count"))
+        // ->select('add_fruits.*','carts.id as cart_id')
+        ->groupBy('carts.product_id')
+        ->get();
+        
+        return view('template_folder.cartlisting',['products'=>$products]);
+    }
+    public function removeCart($cart_id)
+    {
+        Cart::destroy($cart_id);
+        return redirect('cartlisting');
+    }
+
 }

@@ -30,9 +30,9 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
 // });
 Route::get('/',[MyProduct::class,'showIndex']);
 
-Route::get('/homepage', function () {
-    return view('template_folder.index'); 
-});
+// Route::get('/homepage', function () {
+//     return view('template_folder.index'); 
+// });
 Route::view('about','template_folder/about');
 Route::view('news','template_folder/news');
 Route::view('shop','template_folder/shop');
@@ -52,7 +52,9 @@ Route::post('addfruit',[MyProduct::class,'addfruit']);
 Route::post('updatefruit',[FruitController::class,'updatefruit']);
 Route::get('deletefruit/{id}',[FruitController::class,'deletefruit']);
 Route::get('add_to_cart/{id}',[FruitController::class,'add_to_cart']);
+Route::get('cartlisting',[FruitController::class,'cartListing']);
 Route::post('add_cart_login',[MyProduct::class,'add_cart_login'])->name('add_cart_login');
+Route::get('removecart/{cart_id}',[FruitController::class,'removeCart']);
 
 
 Route::get('signout',[MyProduct::class,'signout'])->name('signout');

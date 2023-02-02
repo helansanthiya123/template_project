@@ -441,8 +441,7 @@
 						}
 						else{
 							
-							// var user_id=result_job.user_id;
-							alert('test')
+							window.location.reload();
 							
 						}
             			

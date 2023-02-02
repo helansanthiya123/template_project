@@ -35,18 +35,25 @@
 	<!-- end breadcrumb section -->
 
 	<!-- check out section -->
+	
 	<div class="checkout-section mt-150 mb-150">
 		<div class="container">
 			<div class="row">
+				
 				<div class="col-lg-8">
 					<div class="checkout-accordion-wrap">
 						<div class="accordion" id="accordionExample">
+
 						  <div class="card single-accordion">
 						    <div class="card-header" id="headingOne">
+								
+							 
 						      <h5 class="mb-0">
 						        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 						          Sign In
+								  
 						        </button>
+								
 						      </h5>
 						    </div>
 
@@ -60,7 +67,14 @@
 										@endif
 						        	
 										@csrf
-						        		
+										@if (Session::has('login_fail'))
+										<div class="alert alert-danger alert-dismissible">
+											<strong>Success!</strong> {{ Session::get('login_fail') }}
+											<button type="button" class="close" data-dismiss="alert">&times;</button>	
+										</div>
+											
+										@endif
+										
 						        		<p>
 											<input type="email" name="email" placeholder="Email">
 											@if($errors->has('email'))
@@ -73,6 +87,8 @@
                         						<span class="text-danger">{{ $errors->first('password') }}</span>
                        						@endif
 										<input type="submit" value="Login" class="boxed-btn">
+										<p>If you don't have an accout ?<a href="{{ url('sign-up') }}" class="text-info">Sign Up</a></p>
+										
 						        	</form>
 						        </div>
 						      </div>

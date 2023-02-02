@@ -59,7 +59,7 @@
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-								<li class="current-list-item"><a href="{{ url('homepage') }}">Home</a>
+								<li class="current-list-item"><a href="{{ url('/') }}">Home</a>
 									
 								</li>
 								<li><a href="{{ url('about') }}">About</a></li>
@@ -99,7 +99,13 @@
 								</li>
 								<li>
 									<div class="header-icons">
-										<a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+										<a class="shopping-cart" href="{{ url('cartlisting') }}">
+											<i class="fas fa-shopping-cart">
+												<?php
+													echo $count=App\Http\Controllers\FruitController::cartItem();
+												?>
+											</i>
+										</a>
 										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 									</div>
 								</li>

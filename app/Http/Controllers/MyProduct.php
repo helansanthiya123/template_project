@@ -31,7 +31,7 @@ class MyProduct extends Controller
             
         }
         else{
-            return redirect('sign-in')->with('message','Login details are invalid');
+            return redirect('sign-in')->with('login_fail','You don\'t have account.create your account');
            
         }
 
