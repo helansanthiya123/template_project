@@ -111,11 +111,11 @@
 								</tr>
 							</thead>
 							<tbody class="order-details-body">
-								<tr>
+								 <tr>
 									<td>Product</td>
 									<td>Total</td>
 								</tr>
-								<tr>
+								{{--<tr>
 									<td>Strawberry</td>
 									<td>$85.00</td>
 								</tr>
@@ -126,20 +126,32 @@
 								<tr>
 									<td>Lemon</td>
 									<td>$35.00</td>
+								</tr> --}}
+								@php
+									$subtotal=0;
+								@endphp
+								@foreach ($products as $cart_list)
+								<tr>
+									<td>{{ $cart_list->fruit_name }}</td>
+									<td>${{ $total=$cart_list->rate*$cart_list->count }}</td>
 								</tr>
+								@php
+									$subtotal+=$total;
+								@endphp
+								@endforeach
 							</tbody>
 							<tbody class="checkout-details">
 								<tr>
 									<td>Subtotal</td>
-									<td>$190</td>
+									<td>${{ $subtotal }}</td>
 								</tr>
 								<tr>
 									<td>Shipping</td>
-									<td>$50</td>
+									<td>$0</td>
 								</tr>
 								<tr>
 									<td>Total</td>
-									<td>$240</td>
+									<td>${{ $subtotal }}</td>
 								</tr>
 							</tbody>
 						</table>

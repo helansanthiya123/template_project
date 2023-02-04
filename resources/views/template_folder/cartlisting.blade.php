@@ -40,7 +40,7 @@
 			<div class="row">
 				<div class="col-lg-8 col-md-12">
 					<div class="cart-table-wrap">
-						<table class="cart-table">
+						<table class="cart-table" id="cart_table_rows">
 							<thead class="cart-table-head">
 								<tr class="table-head-row">
 									<th class="product-remove"></th>
@@ -51,16 +51,30 @@
 									<th class="product-total">Total</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody >
+								@php
+									$subtotal=0;
+								@endphp
                                 @foreach ($products as $cart_list  )
-                                <tr class="table-body-row">
-									<td class="product-remove"><a href="{{ url('removecart/'.$cart_list->cart_id) }}"><i class="far fa-window-close"></i></a></td>
+                                <tr class="table-body-row" >
+									<td class="product-remove"><a href="{{ url('removecart/'.$cart_list->id) }}"><i class="far fa-window-close"></i></a></td>
 									<td class="product-image"><img src="{{ asset('images/'.$cart_list->image_name) }}" alt=""></td>
 									<td class="product-name">{{ $cart_list->fruit_name }}</td>
 									<td class="product-price">{{ $cart_list->rate }}</td>
-									<td class="product-quantity"><input type="number" value="{{ $cart_list->count }}"></td>
-									<td class="product-total">1</td>
+									<td class="product-quantity " id="quan">
+										<div class="input-group text-center" style="width: 70%;">
+											<div class="input-group-prepend"><span class="input-group-text decreasequantity btn" id="{{ $cart_list->cart_id }}">-</span></div>
+											<input type="number" class=" form-control text-center"  value="{{ $cart_list->count }}">
+											<div class="input-group-append"><span class="input-group-text increasequantity btn" id="{{ $cart_list->id }}">+</span></div>
+											
+										</div>
+										
+									</td>
+									<td class="product-total" id="tot">{{ $total=$cart_list->rate*$cart_list->count }}</td>
 								</tr>
+									@php
+										$subtotal+=$total;
+									@endphp
                                 @endforeach
 								
 								{{-- <tr class="table-body-row">
@@ -86,7 +100,7 @@
 
 				<div class="col-lg-4">
 					<div class="total-section">
-						<table class="total-table">
+						<table class="total-table" id="total_table_rows">
 							<thead class="total-table-head">
 								<tr class="table-total-row">
 									<th>Total</th>
@@ -96,21 +110,21 @@
 							<tbody>
 								<tr class="total-data">
 									<td><strong>Subtotal: </strong></td>
-									<td>$500</td>
+									<td>${{ $subtotal }}</td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Shipping: </strong></td>
-									<td>$45</td>
+									<td>$0</td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td>$545</td>
+									<td>${{ $subtotal }}</td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="cart-buttons">
-							<a href="cart.html" class="boxed-btn">Update Cart</a>
-							<a href="checkout.html" class="boxed-btn black">Check Out</a>
+							<a href="#" class="boxed-btn">Update Cart</a>
+							<a href="{{ url('checkout') }}" class="boxed-btn black">Check Out</a>
 						</div>
 					</div>
 
@@ -229,6 +243,55 @@
 	</div>
 	<!-- end copyright -->
 	@include('template_folder.scripts')
+
+	<script>
+		$(document).on('click', ".increasequantity", function(){
+			var product_id=$(this).attr('id');
+					
+				
+				$.ajax({
+					url:'increasequantity/'+product_id,
+					type:'POST',
+					headers: {
+    						'X-CSRF-TOKEN': "{{ csrf_token() }}"
+    						},
+					dataType:'json',
+					success:function(result_job)
+					{
+						if(result_job.data='success')
+						{
+							// $('#quan').load(location.href+" #quan");
+							$("#cart_table_rows").load(" #cart_table_rows");
+							$("#total_table_rows").load(" #total_table_rows");	
+						}
+					}
+				});
+		});
+		$(document).on('click', ".decreasequantity", function(){
+			var cart_id=$(this).attr('id');
+					
+				
+				$.ajax({
+					url:'decreasequantity/'+cart_id,
+					type:'POST',
+					headers: {
+    						'X-CSRF-TOKEN': "{{ csrf_token() }}"
+    						},
+					dataType:'json',
+					success:function(result_job)
+					{
+						if(result_job.data='success')
+						{
+							// $('#quan').load(location.href+" #quan");
+							$("#cart_table_rows").load(" #cart_table_rows");
+							$("#total_table_rows").load(" #total_table_rows");	
+						}
+					}
+				});
+		});
+
+		
+	</script>
 
 </body>
 </html>

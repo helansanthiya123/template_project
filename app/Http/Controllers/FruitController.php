@@ -104,10 +104,47 @@ class FruitController extends Controller
         
         return view('template_folder.cartlisting',['products'=>$products]);
     }
-    public function removeCart($cart_id)
+    public function removeCart($product_id)
     {
-        Cart::destroy($cart_id);
+        Cart::where('product_id', $product_id)->delete();
+        // Cart::destroy($cart_id);
         return redirect('cartlisting');
+    }
+
+    public function increaseQuantity($product_id)
+    {
+        $user_id = Auth::id();
+        $cart= new Cart;
+        $cart->product_id=$product_id;
+        $cart->user_id=$user_id;
+        if($cart->save())
+        {
+            return response()->json(['data'=>'success']);
+        }
+
+    }
+    public function decreaseQuantity($cart_id)
+    {
+        // $user_id = Auth::id(); 
+        if(Cart::destroy($cart_id))
+        {
+            return response()->json(['data'=>'success']);
+        }
+        // return redirect('cartlisting');
+    }
+    public function checkout()
+    {
+        $userId=Auth::id();
+        $products=DB::table('carts')
+        ->join('add_fruits','carts.product_id','=','add_fruits.id')
+        ->where('carts.user_id',$userId)
+        ->select('add_fruits.*','carts.id as cart_id',DB::raw("count(carts.product_id) as count"))
+        // ->select('add_fruits.*','carts.id as cart_id')
+        ->groupBy('carts.product_id')
+        ->get();
+        
+        // return view('template_folder.cartlisting',['products'=>$products]);
+        return view('template_folder.checkout',['products'=>$products]);
     }
 
 }

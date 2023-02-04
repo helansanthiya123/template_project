@@ -53,10 +53,11 @@ Route::post('updatefruit',[FruitController::class,'updatefruit']);
 Route::get('deletefruit/{id}',[FruitController::class,'deletefruit']);
 Route::get('add_to_cart/{id}',[FruitController::class,'add_to_cart']);
 Route::get('cartlisting',[FruitController::class,'cartListing']);
+Route::get('checkout',[FruitController::class,'checkout']);
 Route::post('add_cart_login',[MyProduct::class,'add_cart_login'])->name('add_cart_login');
-Route::get('removecart/{cart_id}',[FruitController::class,'removeCart']);
-
-
+Route::get('removecart/{product_id}',[FruitController::class,'removeCart']);
+Route::post('increasequantity/{product_id}',[FruitController::class,'increaseQuantity']);
+Route::post('decreasequantity/{cart_id}',[FruitController::class,'decreaseQuantity']);
 Route::get('signout',[MyProduct::class,'signout'])->name('signout');
 Route::get('front_signout',[MyProduct::class,'front_signout'])->name('front_signout');
 
