@@ -35,25 +35,40 @@
 	<!-- end breadcrumb section -->
 
 	<!-- check out section -->
-	<div class="checkout-section mt-150 mb-150">
-		<div class="container">
+	<div class="checkout-section mt-4">
+		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-lg-6">
 					<div class="checkout-accordion-wrap">
 						<div class="accordion" id="accordionExample">
 						  <div class="card single-accordion">
 						    <div class="card-header" id="headingOne">
 						      <h5 class="mb-0">
 						        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-						          Billing Address
+						          Billing Address <span><a href="{{ url('order') }}" class="btn btn-primary float-right">Back</a></span>
 						        </button>
+								
 						      </h5>
 						    </div>
 
 						    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 						      <div class="card-body">
-						        <div class="billing-address-form">
-						        	<form action="{{ url('place_order') }}" id="myform" method="POST">
+								@foreach ($orders as $order )
+									
+								
+                                <label for="">Name</label>
+                                <div class="border p-2">{{ $order->name }}</div>
+                                <label for="">Email</label>
+                                <div class="border p-2">{{ $order->email }}</div>
+                                <label for="">Contact</label>
+                                <div class="border p-2">{{ $order->phone }}</div>
+                                <label for="">Billing Address</label>
+                                <div class="border p-2">
+                                   {{ $order->address }}
+                                </div>
+								@endforeach
+						        {{-- <div class="billing-address-form">
+						        	<form action="#" id="myform" method="POST">
 						        		@csrf
 										<p><input type="text" placeholder="Name" name="name"></p>
 						        		<p><input type="email" placeholder="Email"  name="email"></p>
@@ -62,92 +77,43 @@
 						        		<p><textarea name="message" id="bill" cols="30" rows="10" placeholder="Say Something"></textarea></p>
 										<input type="hidden" id="subtotal" name="subtotal">
 									</form>
-						        </div>
+						        </div> --}}
 						      </div>
 						    </div>
 						  </div>
-						  <div class="card single-accordion">
-						    <div class="card-header" id="headingTwo">
-						      <h5 class="mb-0">
-						        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-						          Shipping Address
-						        </button>
-						      </h5>
-						    </div>
-						    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-						      <div class="card-body">
-						        <div class="shipping-address-form">
-						        	<p>Your shipping address form is here.</p>
-						        </div>
-						      </div>
-						    </div>
-						  </div>
-						  <div class="card single-accordion">
-						    <div class="card-header" id="headingThree">
-						      <h5 class="mb-0">
-						        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-						          Card Details
-						        </button>
-						      </h5>
-						    </div>
-						    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-						      <div class="card-body">
-						        <div class="card-details">
-						        	<p>Your card details goes here.</p>
-						        </div>
-						      </div>
-						    </div>
-						  </div>
+						 
 						</div>
 
 					</div>
 				</div>
 
-				<div class="col-lg-4">
+				<div class="col-lg-6">
 					<div class="order-details-wrap">
-						<table class="order-details">
+						<table class="order-details" style="width: 100%;">
 							<thead>
-								<tr>
-									<th>Your order Details</th>
-									<th>Price</th>
-								</tr>
-							</thead>
-							<tbody class="order-details-body">
-								 <tr>
-									<td>Product</td>
-									<td>Total</td>
-								</tr>
-								
-								@php
-									$subtotal=0;
-								@endphp
-								@foreach ($products as $cart_list)
-								<tr>
-									<td>{{ $cart_list->fruit_name }}</td>
-									<td>${{ $total=$cart_list->rate*$cart_list->count }}</td>
-								</tr>
-								@php
-									$subtotal+=$total;
-								@endphp
+                                <tr class="text-center">
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Image</th>
+                                </tr>        
+                            </thead>
+                            <tbody>
+								@foreach ($orderitems as $item)
+								<tr class="text-center">
+                                    <td>{{ $item->fruit_name }}</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ $item->price*$item->quantity }}</td>
+                                    <td><img src="{{ asset('images/'.$item->image_name) }}" alt="" width="100" height="70"></td>
+                                </tr>
 								@endforeach
-							</tbody>
-							<tbody class="checkout-details">
-								<tr>
-									<td>Subtotal</td>
-									<td id="td_subtotal">${{ $subtotal }}</td>
-								</tr>
-								<tr>
-									<td>Shipping</td>
-									<td>$0</td>
-								</tr>
-								<tr>
-									<td>Total</td>
-									<td>${{ $subtotal }}</td>
-								</tr>
-							</tbody>
+								
+								
+                                
+                            </tbody>
 						</table>
-						<input type="submit" class="boxed-btn mt-3" form="myform" value="Place Order"/>
-						{{-- <a href="#" class="boxed-btn" form="myform">Place Order</a> --}}
+						<h4 class="mt-3">Grand Total:{{ $order->subtotal }}</h4>
+						
 					</div>
 				</div>
 			</div>
@@ -256,14 +222,6 @@
 	<!-- end copyright -->
 	@include('template_folder.scripts')
 
-	<script>
-		$(window).load(function() {
- 
- 			var sub_total=$('#td_subtotal').text();
-			$('#subtotal').val(sub_total.replace('$',''));
-			
-		});
-	</script>
 
 </body>
 </html>

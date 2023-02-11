@@ -47,6 +47,12 @@
       </a>
     </li>
 
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{{ route('admin_order') }}">
+        <i class="bi bi-person"></i>
+        <span>Orders</span>
+      </a>
+    </li>
 
     <li class="nav-heading">Pages</li>
 

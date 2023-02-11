@@ -95,6 +95,7 @@
 										<li><a href="{{ url('sign-in') }}">SignIn</a></li>
 										<li><a href="{{ url('sign-up') }}">SignUp</a></li>
 										<li><a href="{{ route('front_signout') }}">Signout</a></li>
+										<li><a href="{{ url('order') }}">Order</a></li>
 									</ul>
 								</li>
 								<li>

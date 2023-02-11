@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use League\CommonMark\Extension\Table\Table;
 
 return new class extends Migration
 {
@@ -15,6 +16,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('userId');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('address');
+            $table->string('message')->nullable();
+            $table->tinyInteger('status')->default('0');
+            $table->string('tracking_no');
+            $table->string('subtotal');
+            $table->string('total');
             $table->timestamps();
         });
     }

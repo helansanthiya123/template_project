@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AddFruit;
-use App\Models\Cart; 
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -146,5 +149,88 @@ class FruitController extends Controller
         // return view('template_folder.cartlisting',['products'=>$products]);
         return view('template_folder.checkout',['products'=>$products]);
     }
+    public function placeOrder(Request $request)
+    {
+        $order = new Order;
+        $order->userId=Auth::id();
+        $order->name=$request->name;
+        $order->email=$request->email;
+        $order->phone=$request->phone;
+        $order->address=$request->address;
+        $order->message=$request->message;
+        $order->subtotal=$request->subtotal;
+        $order->total=$request->subtotal;
+        $order->tracking_no='fruit'.rand(1111,9999);
+        $order->save();
 
+        $userId=Auth::id();
+        $cart=DB::table('carts')
+        ->join('add_fruits','add_fruits.id','=','carts.product_id')
+        ->where('carts.user_id',$userId)
+        ->select('add_fruits.fruit_name','add_fruits.id','add_fruits.rate',DB::raw("count(carts.product_id) as quantity"))
+        ->groupBy('carts.product_id')
+        ->get();
+        
+        foreach($cart as $item)
+        {
+                OrderItem::create([
+                    'order_id'=>$order->id,
+                    'product_id'=>$item->id,
+                    'quantity'=>$item->quantity,
+                    'price'=>$item->rate,
+                ]);
+        }
+        
+        $cartitems=Cart::where('user_id',$userId)->get();
+        Cart::destroy($cartitems);
+        return redirect('front_signout');
+    }
+    public function order()
+    {
+        $userId=Auth::id();
+        if($userId)
+        {
+            $orders=Order::where('userId',$userId)->get();
+            return view('template_folder.order',compact('orders'));
+        }
+        else
+        {
+            return view('template_folder.frontlogin');
+        }
+    }
+    public function orderLogin(Request $request)
+    {
+        $request->validate([
+            'email'=>'required',
+            'password'=>'required'
+        ]);
+
+        $credential=$request->only('email','password');
+        
+        if(Auth::attempt($credential))
+        {
+           
+            $userId=Auth::id();
+            $orders=Order::where('userId',$userId)->get();
+
+            return  view('template_folder.order',compact('orders'));
+            
+        }
+        else{
+            return redirect('sign-in')->with('login_fail','Create account');
+           
+        }
+    }
+    public function view_order($order_id)
+    {
+        $orders=Order::where('id',$order_id)->where('userId',Auth::id())->get();
+        // $orderitems=OrderItem::where('order_id',$order_id)->get();
+        $orderitems=DB::table('order_items')
+                        ->join('add_fruits','add_fruits.id','=','order_items.product_id')
+                        ->where('order_items.order_id','=',$order_id)
+                        ->select('order_items.*','add_fruits.fruit_name','add_fruits.image_name')
+                        ->get();
+        
+        return view('template_folder.view_order',compact('orders','orderitems'));
+    }
 }
